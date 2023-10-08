@@ -320,12 +320,16 @@ func (s Service) VerifyCredential(ctx context.Context, request VerifyCredentialR
 		return nil, sdkutil.LoggingErrorMsg(err, "invalid verify credential request")
 	}
 
+	logrus.Debugf("request is vauild")
+
 	if request.CredentialJWT != nil {
+		logrus.Debugf("start VerifyJWTCredential")
 		err := s.verifier.VerifyJWTCredential(ctx, *request.CredentialJWT)
 		if err != nil {
 			return &VerifyCredentialResponse{Verified: false, Reason: err.Error()}, nil
 		}
 	} else {
+
 		if err := s.verifier.VerifyDataIntegrityCredential(ctx, *request.DataIntegrityCredential); err != nil {
 			return &VerifyCredentialResponse{Verified: false, Reason: err.Error()}, nil
 		}

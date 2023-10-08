@@ -269,11 +269,12 @@ func (s Service) GetSubmission(ctx context.Context, request model.GetSubmissionR
 
 func (s Service) ListSubmissions(ctx context.Context, request model.ListSubmissionRequest) (*model.ListSubmissionResponse, error) {
 	logrus.Debug("listing presentation submissions")
-
+	logrus.Debug(request.PageRequest.ToServicePage())
 	subs, err := s.storage.ListSubmissions(ctx, request.Filter, *request.PageRequest.ToServicePage())
 	if err != nil {
 		return nil, errors.Wrap(err, "fetching submissions from storage")
 	}
+	logrus.Debug(len(subs.Submissions))
 
 	resp := &model.ListSubmissionResponse{
 		Submissions:   make([]model.Submission, 0, len(subs.Submissions)),

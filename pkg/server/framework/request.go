@@ -2,6 +2,7 @@ package framework
 
 import (
 	"errors"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"reflect"
 	"strings"
@@ -79,6 +80,7 @@ func Decode(r *http.Request, val any) error {
 			fieldErrors = append(fieldErrors, fieldError)
 		}
 
+		logrus.Debugln(fieldErrors)
 		return &SafeError{
 			Err:        errors.New("field validation error"),
 			StatusCode: http.StatusBadRequest,

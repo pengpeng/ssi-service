@@ -113,6 +113,7 @@ type CreateManifestResponse struct {
 //	@Router			/v1/manifests [put]
 func (mr ManifestRouter) CreateManifest(c *gin.Context) {
 	var request CreateManifestRequest
+
 	if err := framework.Decode(c.Request, &request); err != nil {
 		errMsg := "invalid create manifest request"
 		framework.LoggingRespondErrWithMsg(c, err, errMsg, http.StatusBadRequest)
@@ -255,10 +256,14 @@ const (
 )
 
 func (sar SubmitApplicationRequest) toServiceRequest() (*model.SubmitApplicationRequest, error) {
+
 	_, token, err := util.ParseJWT(sar.ApplicationJWT)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not parse application JWT")
 	}
+	res, _ := json.Marshal(token)
+	logrus.Debugln("ApplicationJWT")
+	logrus.Debugln("%s", string(res))
 	iss := token.Issuer()
 	if iss == "" {
 		return nil, errors.New("credential application token missing iss")

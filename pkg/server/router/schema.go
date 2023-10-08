@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"net/http"
 
 	schemalib "github.com/TBD54566975/ssi-sdk/credential/schema"
@@ -206,7 +207,9 @@ func (sr SchemaRouter) ListSchemas(c *gin.Context) {
 	}
 
 	schemas := make([]GetSchemaResponse, 0, len(gotSchemas.Schemas))
+
 	for _, s := range gotSchemas.Schemas {
+		logrus.Debugln(s)
 		schemas = append(schemas, GetSchemaResponse{
 			SchemaResponse: &SchemaResponse{
 				ID:               s.ID,

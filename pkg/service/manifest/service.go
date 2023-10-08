@@ -422,8 +422,10 @@ func (s Service) ReviewApplication(ctx context.Context, request model.ReviewAppl
 	var credentials []credint.Container
 	if request.Approved {
 		// build the credential response
+		logrus.Debugln("start Approved")
 		approvalResponse, creds, err := s.buildFulfillmentCredentialResponse(ctx, applicantDID, applicationID, manifestID, gotManifest.FullyQualifiedVerificationMethodID, credManifest, request.CredentialOverrides)
 		if err != nil {
+			logrus.Debugln("start Approved build failed")
 			return nil, sdkutil.LoggingErrorMsg(err, "building credential response")
 		}
 		credentials = creds

@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"
 
@@ -228,6 +229,7 @@ type CreateSubmissionRequest struct {
 }
 
 func (r CreateSubmissionRequest) toServiceRequest() (*model.CreateSubmissionRequest, error) {
+	logrus.Debugln(r.SubmissionJWT.String())
 	_, _, vp, err := integrity.ParseVerifiablePresentationFromJWT(r.SubmissionJWT.String())
 	if err != nil {
 		return nil, errors.Wrap(err, "parsing presentation from jwt")
@@ -408,6 +410,8 @@ func (pr PresentationRouter) ListSubmissions(c *gin.Context) {
 	if pagination.ParsePaginationParams(c, &pageRequest) {
 		return
 	}
+	res, _ := json.Marshal(c.Request)
+	logrus.Debugf(string(res))
 
 	listResp, err := pr.service.ListSubmissions(c, model.ListSubmissionRequest{
 		Filter:      filter,

@@ -1,7 +1,7 @@
 title = "SSI Service Config"
 
 svn = "0.0.1"
-desc = "Default configuration to be used while running the service for testing as a single go process."
+desc = "Dev configuration to be used while running the service for testing as a single go process."
 
 # http service configuration
 [server]
@@ -44,10 +44,14 @@ name = "keystore"
 [services.did]
 name = "did"
 methods = ["key", "web"]
-local_resolution_methods = ["key", "web", "pkh", "peer"]
-universal_resolver_url = "https://dev.uniresolver.io/"
-universal_resolver_methods = ["ion"]
+#local_resolution_methods = ["key", "web", "pkh", "peer"]
+local_resolution_methods = []
 batch_create_max_items = 100
+#universal_resolver_url = "https://dev.uniresolver.io/"
+#universal_resolver_methods = ["ion"]
+universal_resolver_url = "http://localhost:4010"
+universal_resolver_methods = ["key"]
+
 
 [services.schema]
 name = "schema"
